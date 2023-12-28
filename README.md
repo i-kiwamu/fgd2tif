@@ -13,7 +13,7 @@ $ python -m vec2tif fgd --merge --output merge.tif FG-GML-6644-10-DEM5A.zip FG-G
 `vec2tif` requires a subcommand compatible for the type of input data. Following subcommands are available.
 
 | subcommand | note                              |
---------------------------------------------------
+|------------|-----------------------------------|
 | `fgd`      | Fundamental Geo Data of GSI Japan |
 | `csv`      | with Latitude & Longitude columns |
 | `shp`      | ESRI Shapefile (point data)       |
