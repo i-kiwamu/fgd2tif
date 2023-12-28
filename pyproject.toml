@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fgd2tif"
-description = "Conversion of Fundamental Geospatial Data of GSI Japan to GeoTIFF"
+name = "vec2tif"
+description = "Conversion of vector data to GeoTIFF"
 readme = "README.md"
 requires-python = ">=3.7"
 license = { file = "LICENSE" }
@@ -13,14 +13,17 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     { name="Kiwamu Ishikura", email="ishikura.kiwamu@gmail.com" }
 ]
 dependencies = [
     "numpy",
     "gdal",
-    "rasterio"
+    "shapely",
+    "rasterio",
+    "geopandas",
+    "haversine"
 ]
 
 [project.optional-dependencies]

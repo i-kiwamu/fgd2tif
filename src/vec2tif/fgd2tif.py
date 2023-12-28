@@ -86,8 +86,10 @@ class Fgd2Tif:
 
     Attributes:
         input_file_list (list): List of input file names (xml or zip).
+        n_inputs (int): The number of input_file_list.
         is_merge (bool): Merge all the input files if True (default False).
         output_file_list (list): List of output file names.
+        output_file_name (str): Final output file name.
     """
     def __init__(
         self,
@@ -214,7 +216,7 @@ class Fgd2Tif:
         self,
         input_file_name: str):
         """
-        Execution of the conversion.
+        Execution of conversion one by one.
 
         Args:
             input_file_name (str): Input file name.
