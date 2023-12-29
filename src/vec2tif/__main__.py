@@ -1,6 +1,7 @@
 import argparse
 from .fgd2tif import Fgd2Tif
 from .csv2tif import Csv2Tif
+from .shp2tif import Shp2Tif
 
 def command_fgd(args):
     fgd2tif = Fgd2Tif(args.input, args.merge, args.output)
@@ -9,6 +10,10 @@ def command_fgd(args):
 def command_csv(args):
     csv2tif = Csv2Tif(args.input, args.crs, args.resolution)
     csv2tif.execute_all()
+
+def command_shp(args):
+    shp2tif = Shp2Tif(args.input, args.resolution)
+    shp2tif.execute_all()
 
 # Argument parser
 parser = argparse.ArgumentParser(
@@ -58,6 +63,23 @@ parser_csv.add_argument(
     required=True,
 )
 parser_csv.set_defaults(handler=command_csv)
+
+# shp
+parser_shp = subparsers.add_parser(
+    "shp",
+    help="ESRI Shapefile")
+parser_shp.add_argument(
+    "input",
+    help="Input shp files (one or more).",
+    nargs="+")
+parser_shp.add_argument(
+    "--resolution", "-r",
+    help="Spatial resolution of the input files.",
+    default=3.0,
+    type=float,
+    required=True,
+)
+parser_shp.set_defaults(handler=command_shp)
 
 
 # Parse arguments

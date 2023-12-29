@@ -21,6 +21,7 @@ dependencies = [
     "numpy",
     "gdal",
     "shapely",
+    "pyproj",
     "rasterio",
     "geopandas",
     "haversine"
