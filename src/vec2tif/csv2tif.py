@@ -11,6 +11,15 @@ from haversine import inverse_haversine, Direction, Unit
 
 
 def get_latlon_names(columns: pd.core.indexes.base.Index) -> dict:
+    """
+    Search and get latitude/longitude names in the columns.
+
+    Args:
+        columns (pd.core.indexes.base.Index): Columns of pandas data frame.
+    
+    Returns:
+        result (dict): Tuple of column index and name of latitude/longitude.
+    """
     result = {
         "lat": (),
         "lng": (),
@@ -29,6 +38,29 @@ def get_latlon_names(columns: pd.core.indexes.base.Index) -> dict:
         raise KeyError("Longitude is not found! {}".format(columns))
     else:
         return result
+
+def get_dtype(df: pd.DataFrame) -> np.dtype:
+    """
+    Decide the data type of the exported GeoTiff file from data frame.
+
+    Args:
+        df (pd.DataFrame): Pandas data frame.
+    
+    Returns:
+        dtype (np.dtype): Data type of the exported GeoTiff file.
+    """
+    dtypes = df.dtypes.values
+    dtypes_set = set(dtypes)
+    if len(dtypes_set) == 1:
+        return dtypes[0]
+    elif float in dtypes:
+        return np.dtype("float")
+    elif int in dtypes:
+        return np.dtype("int")
+    elif np.uint in dtypes:
+        return np.dtype("uint")
+    else:
+        return np.dtype("object")
 
 
 class Csv2Tif:
@@ -97,14 +129,15 @@ class Csv2Tif:
             int((bbox[2] - bbox[0]) / unit[0]),
             int((bbox[3] - bbox[1]) / unit[1]))
         out_transform = rasterio.transform.from_bounds(*bbox, *nxy)
-        nodata = -9999.
+        out_dtype = get_dtype(df)
+        nodata = -9999. if out_dtype == np.dtype("float") else -9999
 
         profile = {
             "driver": "GTiff",
             "width": nxy[0],
             "height": nxy[1],
             "count": len(df.columns),
-            "dtype": "float32",
+            "dtype": out_dtype,
             "crs": "EPSG:{}".format(self.crs_code),
             "transform": out_transform,
             "nodata": nodata,
