@@ -25,12 +25,12 @@ def get_xy_dim(
     Returns:
         nxy (tuple): (the number of cells in x, the number of cells in y)
     """
-    point0 = (
-        (bbox[3] + bbox[1]) / 2,
-        (bbox[2] + bbox[0]) / 2)  # (lat, lng)
     unit_name = crs.axis_info[0].unit_name
 
     if unit_name == "degree":
+        point0 = (
+            (bbox[3] + bbox[1]) / 2,
+            (bbox[2] + bbox[0]) / 2)  # (lat, lng)
         point_east = inverse_haversine(
             point0, resolution, Direction.EAST, unit=Unit.METERS)
         point_north = inverse_haversine(
@@ -136,7 +136,7 @@ class Shp2Tif:
             for i, z_name in enumerate(columns):
                 z_array = rasterize(
                     zip(gdf["geometry"], gdf[z_name]),
-                    out_shape=nxy,
+                    out_shape=nxy[::-1],
                     transform=out_transform,
                     fill=nodata,
                     all_touched=True)
